@@ -1,6 +1,5 @@
-import Control.Monad
-solve [a,b] = ("Volunteer cheated!":head l:repeat "Bad magician!") !! length l
-  where l = let g (r,b) = (b !! (r-1)) in filter (`elem` g b) (g a)
-parse = replicateM 2 . liftM2 (,) readLn . replicateM 4 $ fmap words getLine
-display i = fmap ((("Case #" ++ show i ++ ": ") ++) . solve) parse
-main = fmap (enumFromTo 1) readLn >>= mapM display >>= mapM_ putStrLn
+(diff, rep) = (\[a,b] -> filter (`elem` b) a, \i -> flip mapM [1..i] . const)
+ans x = ("Volunteer cheated!":head x:repeat "Bad magician!") !! length x
+parse = readLn >>= (\r -> fmap (!!pred r) $ rep 4 (fmap words getLine))
+out i = fmap ((("Case #" ++ show i ++ ": ") ++) . ans . diff) (rep 2 parse)
+main = fmap (enumFromTo 1) readLn >>= mapM out >>= mapM_ putStrLn
