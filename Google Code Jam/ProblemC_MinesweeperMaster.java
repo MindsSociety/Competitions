@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class ProblemC_MinesweeperMaster {
-	static char MINE = '*', PLAYER = 'c', EMPTY = '.';
+	private static char MINE = '*', PLAYER = 'c', EMPTY = '.';
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		int T = in.nextInt();
+
 		for (int t = 1; t <= T; t++) {
 			int r = in.nextInt();
 			int c = in.nextInt();
@@ -16,16 +17,20 @@ public class ProblemC_MinesweeperMaster {
 
 			boolean done = false;
 			char[][] board = new char[r][c];
+
 			for (int i = 0; i < r; i++) {
 				for (int j = 0; j < c; j++) {
 					board[i][j] = EMPTY;
 				}
 			}
+
 			System.out.printf("Case #%d:%n", t);
+
 			if (m == r * c - 1) {
 				for (char[] x : board) {
 					Arrays.fill(x, MINE);
 				}
+
 				board[0][0] = PLAYER;
 				done = true;
 			} else if (r == 1 || c == 1) {
@@ -36,6 +41,7 @@ public class ProblemC_MinesweeperMaster {
 						}
 					}
 				}
+
 				board[0][0] = PLAYER;
 				done = true;
 			} else {
@@ -43,17 +49,21 @@ public class ProblemC_MinesweeperMaster {
 					for (int filledCols = 0; !done && filledCols <= c - 2; filledCols++) {
 						int left = m - filledRows * c - filledCols * r
 								+ filledRows * filledCols;
+
 						if (left < 0) {
 							continue;
 						}
+
 						int leftRows = r - filledRows, leftCols = c
 								- filledCols;
 						int playable = (leftRows - 2) * (leftCols - 2);
+
 						if (playable < left) {
 							continue;
 						}
 
 						board[0][0] = PLAYER;
+
 						for (int i = 0; i < r; i++) {
 							for (int j = 0; j < c; j++) {
 								if (i >= leftRows || j >= leftCols) {
@@ -61,6 +71,7 @@ public class ProblemC_MinesweeperMaster {
 								}
 							}
 						}
+
 						for (int i = leftRows - 1; i >= 2; i--) {
 							for (int j = leftCols - 1; j >= 2; j--) {
 								if (left-- > 0) {
@@ -68,10 +79,14 @@ public class ProblemC_MinesweeperMaster {
 								}
 							}
 						}
+
 						done = true;
 					}
 				}
 			}
+			
+			in.close();
+
 			if (done) {
 				for (char[] x : board) {
 					System.out.println(new String(x));
