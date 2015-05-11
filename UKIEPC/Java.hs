@@ -16,8 +16,16 @@ module Java where
 
   -- | Takes a function that takes an int and returns anything
   -- It evaluates the function and returns a Java print station.
+  --
+  --     if (n == 0) {System.out.println("f 0");}
+  --     if (n == 1) {System.out.println("f 1");}, etc.
   tojava :: Show a => (Integer -> a) -> Integer -> String
-  tojava f n = concat ["\t\tif (n == ", show n, ") {System.out.println(\"", show $ f n, "\");}"]
+  tojava f n = concat [ "\t\tif (n == "
+                      , show n
+                      , ") {System.out.println(\""
+                      , show $ f n
+                      , "\");}"
+                    ]
 
   -- | Maps toJava to a list of Integers and prints line by line.
   java :: Show a => (Integer -> a) -> [Integer] -> IO ()
